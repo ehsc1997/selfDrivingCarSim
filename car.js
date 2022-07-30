@@ -55,12 +55,17 @@ class Car {
         }
         
         // Turning mechanics
-        if (this.controls.right) {
-            this.angle += 0.03; // negative due to y = 0 being at the top of the page
-        }
+        if (this.speed != 0) {
+            // flip direction of turning when reversing to maintain consistency with steering input
+            const flip = this.speed > 0 ? 1: -1; 
 
-        if (this.controls.left) {
-            this.angle -= 0.03; // positive due to y = 0 being at the top of the page
+            if (this.controls.right) {
+                this.angle += 0.03*flip; // negative due to y = 0 being at the top of the page
+            }
+
+            if (this.controls.left) {
+                this.angle -= 0.03*flip; // positive due to y = 0 being at the top of the page
+            }
         }
 
         // Update position depending on the speed and angle (basic trig, unit circle with 0 at the top)

@@ -7,11 +7,15 @@ class Car {
 
         this.speed = 0;
         this.acceleration = 0.2;
+        this.maxSpeed = 3;
+        this.friction = 0.05;
 
         this.controls = new Controls()
     }
 
     update() {
+
+        // Accelerate or decelerate
         if (this.controls.forward) {
             this.speed += this.acceleration;
         }
@@ -19,6 +23,19 @@ class Car {
             this.speed -= this.acceleration;
         }
 
+        // Cap speed with the value of maxSpeed
+        if (this.speed > this.maxSpeed) {
+            this.speed = this.maxSpeed;
+        }
+
+        // Cap breaking/ reverse speed with the value of maxSpeed
+        if (this.speed < -this.maxSpeed) {
+            this.speed = -this.maxSpeed
+        }
+
+        // Apply some basic friction physics
+        
+        // Update position depending on the speed
         this.y -= this.speed;
     }
 

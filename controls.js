@@ -8,6 +8,9 @@ class Controls {
         this.#addKeyboardListeners();
     }
 
+    // Private class method 
+    // Event listener for arrow key presses is created during object creation (constructor)
+    // Any future key presses of relevant keys will trigger relevant attribute change
     #addKeyboardListeners() {
 
         document.onkeydown = (event) => {
@@ -25,7 +28,6 @@ class Controls {
                     this.reverse = true;
                     break;
             }
-            console.table(this);
         }
 
         document.onkeyup = (event) => {
@@ -43,7 +45,6 @@ class Controls {
                     this.reverse = false;
                     break;
             }
-            console.table(this);
         }
         
     }

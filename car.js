@@ -40,6 +40,11 @@ class Car {
         if (this.speed < 0) {
             this.speed += this.friction;
         }
+
+        // To catch friction edge case
+        if (Math.abs(this.speed) < this.friction) {
+            this.speed = 0;
+        }
         
         // Update position depending on the speed
         this.y -= this.speed;

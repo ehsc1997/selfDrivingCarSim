@@ -17,17 +17,21 @@ class Road{
         ctx.lineWidth = 8;
         ctx.strokeStyle = "white";
 
-        // Draw left side of the road
-        ctx.beginPath();
-        ctx.moveTo(this.left, this.top);
-        ctx.lineTo(this.left, this.bottom);
-        ctx.stroke();
-
-        // Draw right side of the road
-        ctx.beginPath();
-        ctx.moveTo(this.right, this.top);
-        ctx.lineTo(this.right, this.bottom);
-        ctx.stroke();
+        for (let i=0; i <= this.laneCount; i++) {
+            // Calculate where to draw lane line 
+            // (according to number of lanes)
+            const x = interpolation(
+                this.left,
+                this.right,
+                i/this.laneCount
+            )
+            // Draw lane line
+            ctx.beginPath();
+            ctx.moveTo(x, this.top);
+            ctx.lineTo(x, this.bottom);
+            ctx.stroke();
+        }
     }
 
 }
+

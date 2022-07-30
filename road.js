@@ -7,25 +7,33 @@ class Road{
         this.left = x - width/2
         this.right = x + width/2
 
-        const infinity = 10000000000;
+        const infinity = 100000;
         this.top = -infinity;
         this.bottom = infinity;
     }
 
     draw(ctx) {
         // Establish attributes of the road
-        ctx.lineWidth = 8;
+        ctx.lineWidth = 5;
         ctx.strokeStyle = "white";
-
-        for (let i=0; i <= this.laneCount; i++) {
+        
+        for (let i = 0; i <= this.laneCount; i++) {
             // Calculate where to draw lane line 
             // (according to number of lanes)
             const x = interpolation(
                 this.left,
                 this.right,
                 i/this.laneCount
-            )
-            // Draw lane line
+            );
+            
+            // Establish dotted and none dotted lanes
+            if (i > 0 && i < this.laneCount) {
+                ctx.setLineDash([20,20]);
+            } else {
+                ctx.setLineDash([]);
+            }
+            
+            // Draw lane lines
             ctx.beginPath();
             ctx.moveTo(x, this.top);
             ctx.lineTo(x, this.bottom);

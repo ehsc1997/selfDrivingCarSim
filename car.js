@@ -54,17 +54,18 @@ class Car {
             this.speed = 0;
         }
         
-        // Lateral movement mechanics (TODO: turning mechanics)
+        // Turning mechanics
         if (this.controls.right) {
-            this.angle -= 0.03; // negative due to y = 0 being at the top of the page
+            this.angle += 0.03; // negative due to y = 0 being at the top of the page
         }
 
         if (this.controls.left) {
-            this.angle += 0.03; // positive due to y = 0 being at the top of the page
+            this.angle -= 0.03; // positive due to y = 0 being at the top of the page
         }
 
-        // Update position depending on the speed
-        this.y -= this.speed;
+        // Update position depending on the speed and angle (basic trig, unit circle with 0 at the top)
+        this.x -= Math.sin(-this.angle)*this.speed;
+        this.y -= Math.cos(-this.angle)*this.speed;
     }
 
     draw(ctx) {
@@ -73,7 +74,7 @@ class Car {
 
         // Implement forward/backward movement and rotation
         ctx.translate(this.x, this.y);
-        ctx.rotate(-this.angle);
+        ctx.rotate(this.angle);
         
         // Draw out the car rectangle
         ctx.beginPath();

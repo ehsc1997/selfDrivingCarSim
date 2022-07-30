@@ -46,6 +46,15 @@ class Car {
             this.speed = 0;
         }
         
+        // Lateral movement mechanics (TODO: turning mechanics)
+        if (this.controls.right) {
+            this.x += 2;
+        }
+
+        if (this.controls.left) {
+            this.x -= 2;
+        }
+
         // Update position depending on the speed
         this.y -= this.speed;
     }

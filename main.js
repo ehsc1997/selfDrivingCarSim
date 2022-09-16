@@ -20,7 +20,7 @@ const road = new Road(canvas.width/2, canvas.width*0.9, laneCount);
 
 // Create and draw the car object
 const x = road.getLaneCenter(startingLane);
-const car = new Car(x, 400, 30, 50, "KEYS");
+const car = new Car(x, 400, 30, 50, "AI");
 const traffic = [
     new Car(x, 100, 30, 50, "DUMMY", 2)
 ]

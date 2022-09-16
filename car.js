@@ -18,11 +18,13 @@ class Car {
         this.friction = 0.05;
 
         // Car controls with event listeners
-        this.controls = new Controls()
+        this.controls = new Controls();
+        this.sensor = new Sensor(this);
     }
 
-    update() {
+    update(roadBorders) {
         this.#move();
+        this.sensor.update(roadBorders);
     }
 
     #move() {
@@ -96,5 +98,7 @@ class Car {
         
         // This, alongside save, will supposedly prevent jitters
         ctx.restore();
+
+        this.sensor.draw(ctx);
     }
 }

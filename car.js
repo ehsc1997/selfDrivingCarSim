@@ -24,7 +24,32 @@ class Car {
 
     update(roadBorders) {
         this.#move();
+        this.polygon = this.#createPolygon()
         this.sensor.update(roadBorders);
+    }
+
+    #createPolygon(){
+        const points = [];
+        const rad = Math.hypot(this.width, this.height)/2;
+        const alpha = Math.atan2(this.width, this.height)
+        points.push({
+            x: this.x-Math.sin(this.angle-alpha)*rad,
+            y: this.y-Math.cos(this.angle-alpha)*rad
+        });
+        points.push({
+            x: this.x-Math.sin(this.angle+alpha)*rad,
+            y: this.y-Math.cos(this.angle+alpha)*rad
+        });
+        points.push({
+            x: this.x-Math.sin(Math.PI+this.angle-alpha)*rad,
+            y: this.y-Math.cos(Math.PI+this.angle-alpha)*rad
+        });
+        points.push({
+            x: this.x-Math.sin(Math.PI+this.angle+alpha)*rad,
+            y: this.y-Math.cos(Math.PI+this.angle+alpha)*rad
+        });
+        
+        return points;
     }
 
     #move() {
@@ -65,39 +90,26 @@ class Car {
             const flip = this.speed > 0 ? 1: -1; 
 
             if (this.controls.right) {
-                this.angle += 0.03*flip; // negative due to y = 0 being at the top of the page
+                this.angle -= 0.03*flip; // negative due to y = 0 being at the top of the page
             }
 
             if (this.controls.left) {
-                this.angle -= 0.03*flip; // positive due to y = 0 being at the top of the page
+                this.angle += 0.03*flip; // positive due to y = 0 being at the top of the page
             }
         }
 
         // Update position depending on the speed and angle (basic trig, unit circle with 0 at the top)
-        this.x -= Math.sin(-this.angle)*this.speed;
-        this.y -= Math.cos(-this.angle)*this.speed;
+        this.x -= Math.sin(this.angle)*this.speed;
+        this.y -= Math.cos(this.angle)*this.speed;
     }
 
     draw(ctx) {
-        // Save context as is to avoid jittering during translation
-        ctx.save();
-
-        // Implement forward/backward movement and rotation
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-        
-        // Draw out the car rectangle
         ctx.beginPath();
-        ctx.rect(
-            -this.width/2,
-            -this.height/2,
-            this.width,
-            this.height
-        );
+        ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
+        for(let i=1; i<this.polygon.length; i++){
+            ctx.lineTo(this.polygon[i].x, this.polygon[i].y);
+        }
         ctx.fill();
-        
-        // This, alongside save, will supposedly prevent jitters
-        ctx.restore();
 
         this.sensor.draw(ctx);
     }

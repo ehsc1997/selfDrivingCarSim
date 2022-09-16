@@ -20,13 +20,18 @@ const road = new Road(canvas.width/2, canvas.width*0.9, laneCount);
 
 // Create and draw the car object
 const x = road.getLaneCenter(startingLane);
-const car = new Car(x, 400, 30, 50);
-
+const car = new Car(x, 400, 30, 50, "KEYS");
+const traffic = [
+    new Car(x, 100, 30, 50, "DUMMY", 2)
+]
 // Animation and drawing
 animate();
 
 function animate() {
-    car.update(road.borders);
+    for(let i=0; i<traffic.length; i++){
+        traffic[i].update(road.borders,[]);
+    }
+    car.update(road.borders, traffic);
 
     canvas.height = window.innerHeight;
 
@@ -34,8 +39,11 @@ function animate() {
     ctx.save();
     ctx.translate(0, -car.y+canvas.height*0.7);
 
-    road.draw(ctx)
-    car.draw(ctx);
+    road.draw(ctx);
+    for(let i=0; i<traffic.length; i++){
+        traffic[i].draw(ctx, "red");
+    }
+    car.draw(ctx, "black");
 
     ctx.restore();
     requestAnimationFrame(animate);

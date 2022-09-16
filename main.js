@@ -1,9 +1,13 @@
 // Grab my canvas element and make it as long as the window, and thin
-const canvas = document.getElementById("myCanvas");
-canvas.width = 200;
+const carCanvas = document.getElementById("carCanvas");
+carCanvas.width = 200;
+
+const networkCanvas = document.getElementById("networkCanvas");
+networkCanvas.width = 300;
 
 // Get Canvas context to create drawings on it
-const ctx = canvas.getContext("2d");
+const carCtx = carCanvas.getContext("2d");
+const networkCtx = networkCanvas.getContext("2d");
 
 // Set up car's starting lane and road's number of lanes
 const startingLane = 1;
@@ -16,7 +20,7 @@ if (startingLane >= laneCount) {
 }
 
 // Create and draw the road object
-const road = new Road(canvas.width/2, canvas.width*0.9, laneCount);
+const road = new Road(carCanvas.width/2, carCanvas.width*0.9, laneCount);
 
 // Create and draw the car object
 const x = road.getLaneCenter(startingLane);
@@ -33,18 +37,21 @@ function animate() {
     }
     car.update(road.borders, traffic);
 
-    canvas.height = window.innerHeight;
+    carCanvas.height = window.innerHeight;
+    networkCanvas.height = window.innerHeight;
 
     // Move the road, so it looks like the car has a camera above it
-    ctx.save();
-    ctx.translate(0, -car.y+canvas.height*0.7);
+    carCtx.save();
+    carCtx.translate(0, -car.y+carCanvas.height*0.7);
 
-    road.draw(ctx);
+    road.draw(carCtx);
     for(let i=0; i<traffic.length; i++){
-        traffic[i].draw(ctx, "red");
+        traffic[i].draw(carCtx, "red");
     }
-    car.draw(ctx, "black");
+    car.draw(carCtx, "black");
 
-    ctx.restore();
+    carCtx.restore();
+
+    Visualizer.drawNetwork(networkCtx, car.brain);
     requestAnimationFrame(animate);
 }

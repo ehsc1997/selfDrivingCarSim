@@ -1,9 +1,9 @@
 class Sensor{
     constructor(car){
         this.car = car;
-        this.rayCount = 10; // Number of rays from sensor (discrete precision)
+        this.rayCount = 5; // Number of rays from sensor (discrete precision)
         this.rayLength = 200; // Lenght at which sensor is accurate
-        this.raySpread = Math.PI*2; // Angle between each ray
+        this.raySpread = Math.PI/2; // Angle between each ray
 
         this.rays = [];
         this.readings = [];

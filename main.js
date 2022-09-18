@@ -16,7 +16,7 @@ const laneCount = 3;
 // Check starting lane isn't ">" number of lanes, otherwise start on last lane
 // startingLane = Math.min(startingLane, laneCount - 1);
 if (startingLane >= laneCount) {
-    alert("StartingLane value is too")
+    alert("StartingLane value is too high")
 }
 
 // Create and draw the road object
@@ -27,12 +27,27 @@ const x = road.getLaneCenter(startingLane);
 
 const N = 1000;
 const cars = generateCars(N);
+let bestCar = cars[0];
+if(localStorage.getItem("bestBrain")){
+    bestCar.brain = JSON.parse(
+        localStorage.getItem("bestBrain")
+    );
+}
 
 const traffic = [
     new Car(x, 100, 30, 50, "DUMMY", 2)
 ]
 // Animation and drawing
 animate();
+
+function save(){
+    localStorage.setItem("bestBrain", JSON.stringify(bestCar.brain));
+
+}
+
+function remove(){
+    localStorage.removeItem("bestBrain");
+}
 
 function generateCars(N){
     const cars=[];
@@ -50,7 +65,7 @@ function animate() {
         cars[i].update(road.borders, traffic);
     }
 
-    const bestCar = cars.find(
+    bestCar = cars.find(
         c=>c.y==Math.min(...cars.map(c=>c.y))
         )
 
